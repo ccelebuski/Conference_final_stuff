@@ -1,0 +1,228 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{mathtools}
+
+\usepackage{lipsum} 
+\usepackage{framed}% Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Sarah Lawrence College} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Orbits In Processing \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Calvin Celebuski} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\begin{framed}
+\footnotesize
+\begin{verbatim}
+float x,y,vx,vy,a,r,ax,ay,x2,y2,v,KE,PE,ME;
+float dx,dy,dr,dth,drh,drhx,drhy,rhx,rhy,xp,yp,A;
+\end{verbatim}
+\end{framed}
+\normalsize
+\begin{verbatim}
+Here, I establish the variables.
+\end{verbatim}
+\begin{framed}
+\footnotesize
+\begin{verbatim}
+void setup(){
+  frameRate(600);
+  x=0;
+  y=100;
+  x2=width/2;
+  y2=height/2;
+  vx=1.1;
+  vy=-0.01;
+  size(1280,730);
+}
+\end{verbatim}
+\end{framed}
+\normalsize
+\begin{verbatim}
+from x=0 to vy=-0.01 is where I set the initial conditions
+\end{verbatim}
+\begin{framed}
+\footnotesize
+\begin{verbatim}
+void draw(){
+  background(0);
+  stroke(0,0,50);
+  fill(0,0,255);
+  ellipse(x2,y2,20,20);
+\end{verbatim}
+\end{framed}
+\normalsize
+\begin{verbatim}
+That's the blue body.  It stays put at the center of the simulation.
+
+Below, I include some things for user input.  Allowing the user to have
+an effect on the red body's movement and to change the frame rate.
+\end{verbatim}
+\begin{framed}
+\footnotesize
+\begin{verbatim}
+  stroke(0,0,255);
+  if (keyPressed){
+    if(key=='w'){ //forward boost
+      vx=vx+A*drhx;
+      vy=vy+A*drhy;
+      ellipse(x+x2-(3*drhx),y+y2-(3*drhy),20,20);
+    }
+    if(key=='a'){ //left boost
+      vx=vx+A*drhy;
+      vy=vy-A*drhx;
+      ellipse(x+x2-(3*drhy),y+y2+(3*drhx),20,20);
+    }
+    if(key=='s'){ //backward boost
+      if(v>0.01){
+        vx=vx-A*drhx;
+        vy=vy-A*drhy;
+        ellipse(x+x2+(3*drhx),y+y2+(3*drhy),20,20);
+      }
+      if(v<=0.01){
+        vx=0;
+        vy=0;
+        ax=0;
+        ay=0;
+        ellipse(x+x2,y+y2,24,24);
+      }
+    }
+    if(key=='d'){ //right boost
+      vx=vx-A*drhy;
+      vy=vy+A*drhx;
+      ellipse(x+x2+(3*drhy),y+y2-(3*drhx),20,20);
+    }
+    if(key=='z'){
+      frameRate(1);
+    }
+    if(key=='x'){
+      frameRate(60);
+    }
+    if(key=='c'){
+      frameRate(600);
+    }
+  }
+  stroke(50,0,0);
+  fill(255,0,0);
+  ellipse(x+x2,y+y2,20,20);
+\end{verbatim}
+\end{framed}
+\normalsize
+\begin{verbatim}
+Here I establish the red body, setting it relative to the blue body by
+making its position x+x2, y+y2.
+\end{verbatim}
+\begin{framed}
+\footnotesize
+\begin{verbatim}
+  r=sqrt((x*x)+(y*y));
+  A=.002; //acceleration caused by user input
+  a=-100/(r*r); //acceleration
+  ax=a*x/r; //acceleration in the x direction
+  ay=a*y/r; //acceleration in the y direction
+  vx=vx+ax; //update velocity in the x direction
+  vy=vy+ay; //update velocity in the y direction
+  x=x+vx; //update x position
+  y=y+vy; //update y position
+  xp=x-vx; //previous x position
+  yp=y-vy; //previous y position
+  dx=x-xp; //delta x
+  dy=y-yp; //delta y
+  v=sqrt(vx*vx+vy*vy); //velocity
+  dr=sqrt(dx*dx+dy*dy); //delta r
+  drhx=dx/dr; //delta rhat x = cosTheta
+  drhy=dy/dr; //delta rhat y = sinTheta
+\end{verbatim}
+\end{framed}
+\normalsize
+\begin{verbatim}
+Below I determine the Kinetic Energy, Potential Energy, and Total
+Mechanical Energy and display them and some other numbers on screen.
+\end{verbatim}
+\begin{framed}
+\footnotesize
+\begin{verbatim}
+  KE=v*v/2.;
+  PE=-100/(r);
+  ME=KE+PE;
+  fill(255);
+  text("velocity="+str(v),40,40);
+  text("acceleration="+str(a*-1),40,50);
+  text("distance="+str(r),40,60);
+  text("Kinetic Energy="+str(KE),40,70);
+  text("Potential Energy="+str(PE),40,80);
+  text("Mechanical Energy="+str(ME),40,90);
+  //if(x+x2>=x2-10&&x+x2<=x2+10&&y+y2<=y2+21&&y+y2>=y2){
+  //  vy=vy*-1;
+  //}
+}
+\end{verbatim}
+\end{framed}
+\normalsize
+That last part was a failed attempt to get the red body to bounce off of the blue body.  I set
+it inactive with the two slashes.
+
+\end{document}
